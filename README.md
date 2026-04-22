@@ -9,7 +9,7 @@
 
 # build-in-public
 
-> A Claude Code skill that takes a working local repo and handles the entire "make it public" pass — secrets audit, README narrative, zip packaging, and GitHub publish — in one command.
+> A cross-platform agent skill that takes a working local repo and handles the entire "make it public" pass — secrets audit, README narrative, zip packaging, and GitHub publish — in one command. Works with Claude Code and Codex.
 
 ## The Problem
 
@@ -21,7 +21,7 @@ One command should close that gap. This skill treats the whole process as a sing
 
 The non-obvious design decision: most release tools handle the mechanics and skip the narrative. This one has an opinion about narrative. The `references/readme-template.md` encodes a specific structure — problem, thesis, what it does, quick start, limitations — because a README without a clear "why it exists" section is a stub that nobody reads past the first paragraph. The skill asks for "the spark" (what made you build this?) as a preflight step, uses your answer as a lens, then reads the code itself to find what's actually interesting.
 
-Built as a personal Claude Code skill, published because it solved a real problem.
+Built as a personal skill, published because it solved a real problem.
 
 ## What It Does
 
@@ -35,41 +35,56 @@ Given a local repo that already works, the skill:
 
 ## How It Works
 
-The skill is invoked via Claude Code's skill system (`/build-in-public`). Claude reads the code deeply enough to form three hypotheses about why it was built, then asks you to confirm the framing. That answer informs the README narrative, but the code is the primary source — Claude finds what's technically interesting regardless of how you describe the motivation.
+The skill is a single `SKILL.md` definition that works in any agent runtime supporting the `SKILL.md` frontmatter convention (Claude Code, Codex, oh-my-claudecode, and similar). The agent reads the code deeply enough to form three hypotheses about why it was built, then asks you to confirm the framing. That answer informs the README narrative, but the code is the primary source — the agent finds what's technically interesting regardless of how you describe the motivation.
 
 The release strategy distinguishes between two lanes: harden in place when the existing repo and git history are safe to expose, or create a clean public-export repo when the working project is good but the history has scratch commits, private notes, or experimental debris. The skill defaults to the safer lane.
 
 ## Quick Start
 
-**Requirements:** [Claude Code](https://claude.ai/code) + [oh-my-claudecode](https://github.com/davidvictor/oh-my-claudecode) (or any Claude Code skill loader that supports the `SKILL.md` format).
+Clone into the skills directory for your agent:
+
+### Claude Code
 
 ```bash
-# Clone into your Claude skills directory
-git clone https://github.com/davidvictor/claude-build-in-public ~/.claude/skills/build-in-public
+git clone https://github.com/davidvictor/build-in-public ~/.claude/skills/build-in-public
 ```
 
-Then from Claude Code, navigate to the repo you want to publish and run:
+### Codex
+
+```bash
+git clone https://github.com/davidvictor/build-in-public ~/.codex/skills/build-in-public
+```
+
+### Both (symlink pattern)
+
+If you use both agents, clone once and symlink:
+
+```bash
+git clone https://github.com/davidvictor/build-in-public ~/skills/build-in-public
+ln -s ~/skills/build-in-public ~/.claude/skills/build-in-public
+ln -s ~/skills/build-in-public ~/.codex/skills/build-in-public
+```
+
+Then invoke the skill from your agent against the repo you want to publish:
+
+```
+build in public
+```
+
+Or, if you're using oh-my-claudecode or a slash-command-capable runtime:
 
 ```
 /build-in-public
 ```
-
-Claude will walk through the full workflow: preflight, audit, harden, docs, package, publish.
 
 ## Usage
 
-Point Claude at any local repo that already solves a real problem:
+Point the agent at any local repo that already solves a real problem. The skill will:
 
-```
-# From within Claude Code, with your target repo as the working directory:
-/build-in-public
-
-# Claude will:
-# 1. Read the code and form hypotheses about the motivation
-# 2. Ask you to confirm "the spark"
-# 3. Run the full audit → harden → docs → package → publish pass
-# 4. Report the GitHub URL when done
-```
+1. Read the code and form hypotheses about the motivation
+2. Ask you to confirm "the spark" (one of three proposed options, or your own phrasing)
+3. Run the full audit → harden → docs → package → publish pass
+4. Report the GitHub URL when done
 
 The skill also works on repos outside the default codex workspace — point it at any local path and it adapts.
 
@@ -77,16 +92,21 @@ The skill also works on repos outside the default codex workspace — point it a
 
 | File | Purpose |
 |------|---------|
-| `SKILL.md` | The skill definition — loaded by Claude Code |
+| `SKILL.md` | The skill definition — loaded by Claude Code and Codex |
 | `references/public-release-checklist.md` | Gate checklist used before publishing |
 | `references/readme-template.md` | README structure template used when writing docs |
 | `scripts/create_release_zip.sh` | Packages a clean zip from committed HEAD |
 
+## Compatibility Notes
+
+The `SKILL.md` frontmatter includes `allowed-tools` and `version` fields. Claude Code uses `allowed-tools` to scope which tools the skill can invoke; Codex currently ignores unknown frontmatter fields. Both agents parse the rest of the frontmatter identically.
+
+If you maintain your own fork and want a stricter Codex-minimal definition, you can safely remove the `allowed-tools` and `version` fields — the skill body does not depend on them.
+
 ## Requirements
 
-- Claude Code (any recent version)
-- A skill loader that supports the `SKILL.md` frontmatter format (oh-my-claudecode or compatible)
-- `gh` CLI for the publish step
+- An agent runtime supporting `SKILL.md` (Claude Code, Codex, or compatible)
+- `gh` CLI for the publish step (with `gh auth login` configured)
 - `figlet` for the ASCII banner (`brew install figlet` on macOS)
 - `git` and `unzip` for the packaging step
 

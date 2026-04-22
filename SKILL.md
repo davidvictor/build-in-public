@@ -158,7 +158,10 @@ Run the strongest verification the repo can reasonably support:
 4. Create the public zip artifact from committed code:
 
 ```bash
-bash ~/.claude/skills/build-in-public/scripts/create_release_zip.sh <repo-path>
+bash "$(dirname "$0")/scripts/create_release_zip.sh" <repo-path>
+# Or from an installed skill:
+#   bash ~/.claude/skills/build-in-public/scripts/create_release_zip.sh <repo-path>   # Claude Code
+#   bash ~/.codex/skills/build-in-public/scripts/create_release_zip.sh <repo-path>    # Codex
 ```
 
 The helper writes the zip under `~/.codex/workspaces/default/artifacts/<slug>/` by default. For repos outside the codex workspace, the zip lands in `/tmp/build-in-public/<slug>/`.
