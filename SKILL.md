@@ -127,13 +127,19 @@ Create or rewrite the public-facing docs so a stranger can orient quickly:
   - a short topic list
   - optional release notes if the user wants an initial release
 
-**Generate the ASCII banner.** Every README gets a figlet slant banner at the very top, above everything else. Run:
+**Generate the ASCII banner.** Every README gets a figlet banner at the very top, above everything else. Use the default (rectangle-style) font — no slanted characters. Run:
 
 ```bash
-figlet -f slant "<project name>" 2>/dev/null || figlet "<project name>"
+figlet "<banner text>"
 ```
 
-If figlet is not installed: `brew install figlet`. Wrap the output in a code block. This is the first thing someone sees — it signals that the project has a real identity.
+**Banner text rules:**
+- Use the project's display name, not its repo slug
+- Replace any hyphens with spaces (`build-in-public` → `build in public`)
+- Keep everything lowercase (`Mock Pop` → `mock pop`)
+- If the display name differs from the repo slug (e.g. repo `superwhisperer-lab`, display `superwhisper lab`), use the display name
+
+Wrap the output in a fenced code block. If figlet is not installed: `brew install figlet`. This is the first thing someone sees — it signals that the project has a real identity.
 
 **Build the narrative from the code, informed by the user.** The user's spark answer is context — use it to understand intent, not to write their story for them verbatim. The real narrative comes from reading the code closely: what problem does the design actually solve, what's the non-obvious decision, what would a peer developer find interesting or worth stealing?
 
