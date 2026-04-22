@@ -127,10 +127,10 @@ Create or rewrite the public-facing docs so a stranger can orient quickly:
   - a short topic list
   - optional release notes if the user wants an initial release
 
-**Generate the ASCII banner.** Every README gets a figlet banner at the very top, above everything else. Use the default (rectangle-style) font — no slanted characters. Run:
+**Generate the ASCII banner.** Every README gets a figlet banner at the very top, above everything else. Use the `rectangles` font — no slanted characters. Run:
 
 ```bash
-figlet "<banner text>"
+figlet -f rectangles -w 200 "<banner text>"
 ```
 
 **Banner text rules:**
