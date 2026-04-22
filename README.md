@@ -41,37 +41,73 @@ The release strategy distinguishes between two lanes: harden in place when the e
 
 ## Quick Start
 
-Clone into the skills directory for your agent:
+### Recommended: install via `npx skills`
 
-### Claude Code
+The easiest path is the cross-agent [`skills` CLI](https://github.com/vercel-labs/skills). It auto-detects your installed agents and copies the skill into the right place:
+
+```bash
+npx skills add davidvictor/build-in-public
+```
+
+That's it. Works for Claude Code, Codex, Cursor, OpenCode, and 40+ other agent runtimes. To install globally (to `~/.claude/skills/` or `~/.codex/skills/`) without prompts:
+
+```bash
+npx -y skills add davidvictor/build-in-public -g -y
+```
+
+To preview what would be installed without touching your filesystem:
+
+```bash
+npx skills add davidvictor/build-in-public --list
+```
+
+### Updating
+
+To refresh installed skills to the latest version:
+
+```bash
+npx skills update
+```
+
+Or re-run `npx skills add davidvictor/build-in-public` — the CLI re-clones from `main` and overwrites.
+
+### Manual install (if you prefer)
+
+<details>
+<summary>Claude Code</summary>
 
 ```bash
 git clone https://github.com/davidvictor/build-in-public ~/.claude/skills/build-in-public
 ```
+</details>
 
-### Codex
+<details>
+<summary>Codex</summary>
 
 ```bash
 git clone https://github.com/davidvictor/build-in-public ~/.codex/skills/build-in-public
 ```
+</details>
 
-### Both (symlink pattern)
-
-If you use both agents, clone once and symlink:
+<details>
+<summary>Both agents via symlink</summary>
 
 ```bash
 git clone https://github.com/davidvictor/build-in-public ~/skills/build-in-public
 ln -s ~/skills/build-in-public ~/.claude/skills/build-in-public
 ln -s ~/skills/build-in-public ~/.codex/skills/build-in-public
 ```
+</details>
 
-Then invoke the skill from your agent against the repo you want to publish:
+### Invoking
+
+Once installed, run against any repo you want to publish:
 
 ```
 build in public
 ```
 
-Or, if you're using oh-my-claudecode or a slash-command-capable runtime:
+Or, in runtimes that support slash commands (oh-my-claudecode, etc.):
 
 ```
 /build-in-public
