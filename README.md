@@ -1,0 +1,103 @@
+```
+    __          _ __    __      _                         __    ___     
+   / /_  __  __(_) /___/ /     (_)___        ____  __  __/ /_  / (_)____
+  / __ \/ / / / / / __  /_____/ / __ \______/ __ \/ / / / __ \/ / / ___/
+ / /_/ / /_/ / / / /_/ /_____/ / / / /_____/ /_/ / /_/ / /_/ / / / /__  
+/_.___/\__,_/_/_/\__,_/     /_/_/ /_/     / .___/\__,_/_.___/_/_/\___/  
+                                         /_/                              
+```
+
+# build-in-public
+
+> A Claude Code skill that takes a working local repo and handles the entire "make it public" pass — secrets audit, README narrative, zip packaging, and GitHub publish — in one command.
+
+## The Problem
+
+Good tools die on the machine they were built on. The gap between "this works" and "someone else can clone and run this" is wider than it looks: secrets mixed into history, a README that assumes too much, no install path a stranger can follow, no license. Most prototypes never close that gap — not because the tool isn't worth sharing, but because the closing is tedious and easy to defer indefinitely.
+
+## Why I Built This
+
+One command should close that gap. This skill treats the whole process as a single workflow: audit for secrets and private paths, harden the install steps, write the README with the right narrative structure, package a clean zip from committed HEAD, and push to GitHub with description and topics set.
+
+The non-obvious design decision: most release tools handle the mechanics and skip the narrative. This one has an opinion about narrative. The `references/readme-template.md` encodes a specific structure — problem, thesis, what it does, quick start, limitations — because a README without a clear "why it exists" section is a stub that nobody reads past the first paragraph. The skill asks for "the spark" (what made you build this?) as a preflight step, uses your answer as a lens, then reads the code itself to find what's actually interesting.
+
+Built as a personal Claude Code skill, published because it solved a real problem.
+
+## What It Does
+
+Given a local repo that already works, the skill:
+
+1. **Audits** for secrets, private paths, local credentials, and history that shouldn't be public
+2. **Hardens** install steps, `.gitignore`, `env.example`, and the primary entrypoint
+3. **Writes** a README following a narrative template — problem, thesis, what it does, quick start, limitations
+4. **Packages** a clean release zip using `git archive` (committed files only, no working tree debris)
+5. **Publishes** a public GitHub repo with a prepared description and topic tags
+
+## How It Works
+
+The skill is invoked via Claude Code's skill system (`/build-in-public`). Claude reads the code deeply enough to form three hypotheses about why it was built, then asks you to confirm the framing. That answer informs the README narrative, but the code is the primary source — Claude finds what's technically interesting regardless of how you describe the motivation.
+
+The release strategy distinguishes between two lanes: harden in place when the existing repo and git history are safe to expose, or create a clean public-export repo when the working project is good but the history has scratch commits, private notes, or experimental debris. The skill defaults to the safer lane.
+
+## Quick Start
+
+**Requirements:** [Claude Code](https://claude.ai/code) + [oh-my-claudecode](https://github.com/davidvictor/oh-my-claudecode) (or any Claude Code skill loader that supports the `SKILL.md` format).
+
+```bash
+# Clone into your Claude skills directory
+git clone https://github.com/davidvictor/claude-build-in-public ~/.claude/skills/build-in-public
+```
+
+Then from Claude Code, navigate to the repo you want to publish and run:
+
+```
+/build-in-public
+```
+
+Claude will walk through the full workflow: preflight, audit, harden, docs, package, publish.
+
+## Usage
+
+Point Claude at any local repo that already solves a real problem:
+
+```
+# From within Claude Code, with your target repo as the working directory:
+/build-in-public
+
+# Claude will:
+# 1. Read the code and form hypotheses about the motivation
+# 2. Ask you to confirm "the spark"
+# 3. Run the full audit → harden → docs → package → publish pass
+# 4. Report the GitHub URL when done
+```
+
+The skill also works on repos outside the default codex workspace — point it at any local path and it adapts.
+
+## Included Files
+
+| File | Purpose |
+|------|---------|
+| `SKILL.md` | The skill definition — loaded by Claude Code |
+| `references/public-release-checklist.md` | Gate checklist used before publishing |
+| `references/readme-template.md` | README structure template used when writing docs |
+| `scripts/create_release_zip.sh` | Packages a clean zip from committed HEAD |
+
+## Requirements
+
+- Claude Code (any recent version)
+- A skill loader that supports the `SKILL.md` frontmatter format (oh-my-claudecode or compatible)
+- `gh` CLI for the publish step
+- `figlet` for the ASCII banner (`brew install figlet` on macOS)
+- `git` and `unzip` for the packaging step
+
+## Limitations
+
+- Tested on macOS. The shell scripts should work on Linux; Windows paths are not handled.
+- The publish step uses `gh` CLI — requires `gh auth login` to be configured first.
+- The skill is opinionated about README structure. If your project needs a different format, edit `references/readme-template.md` after cloning.
+- History rewriting is explicitly out of scope — the skill prefers a clean public-export repo over `git filter-branch` surgery.
+- `figlet` must be installed for the ASCII banner step; the skill degrades gracefully if it's missing.
+
+## License
+
+MIT
