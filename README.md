@@ -36,6 +36,8 @@ The skill reads the project, forms a short public framing, asks you to confirm t
 
 The release strategy distinguishes between two lanes: harden in place when the existing repo and git history are safe to expose, or create a clean public-export repo when the working project is good but the history has scratch commits, private notes, or experimental debris. The skill defaults to the safer lane.
 
+![Dark-mode workflow diagram showing build-in-public turning a local repo into a published release](assets/readme-workflow-dark.png)
+
 ## Codex-Native Capabilities
 
 The skill now treats newer [Codex app capabilities](https://developers.openai.com/codex/app/features) as optional accelerators:
@@ -119,6 +121,7 @@ The skill also works outside the default workspace — point it at any local pat
 |------|---------|
 | `SKILL.md` | The skill definition |
 | `assets/repo-structure-dark.png` | Dark-mode repo structure diagram generated with Codex native image generation |
+| `assets/readme-workflow-dark.png` | Dark-mode README workflow diagram generated with Codex native image generation |
 | `references/public-release-checklist.md` | Gate checklist used before publishing |
 | `references/readme-template.md` | README structure template used when writing docs |
 | `scripts/create_release_zip.sh` | Packages a clean zip from committed HEAD |
