@@ -34,7 +34,7 @@ Use this skill when the project already works and the job is to make it presenta
 When the host provides native Codex app or CLI capabilities, use them as accelerators without making them hard dependencies:
 
 - Use web search for current publish-platform facts, package-manager behavior, security advisories, or docs that may have changed. Prefer primary sources and cite them in the final report.
-- Use built-in image generation for project-bound README visuals when a repo map, architecture diagram, banner, or illustrative asset would make the project easier to understand. Save the final asset under `assets/`, use descriptive alt text, and keep critical technical labels in Markdown, Mermaid, SVG, or nearby prose if generated text is imperfect.
+- Use built-in image generation for project-bound README visuals when a repo map, architecture diagram, banner, or illustrative asset would make the project easier to understand. Generate the image, inspect it, copy the final selected file into the repo under `assets/`, insert it into the README at the right narrative location, use descriptive alt text, and keep critical technical labels in Markdown, Mermaid, SVG, or nearby prose if generated text is imperfect.
 - Use the in-app browser for local web previews, file-backed previews, and visual review on public pages that do not require sign-in.
 - Use computer use only for narrow GUI verification when the project is a desktop app, simulator flow, spreadsheet, document, presentation, or another surface that cannot be checked through normal shell/browser tooling.
 - Use Codex app worktrees for isolated exploratory or parallel release-prep work, then promote only the intended files into the publish lane.
@@ -137,7 +137,7 @@ Create or rewrite the public-facing docs so a stranger can orient quickly:
 - document the test command and any required local dependencies
 - be explicit about current limitations, platform assumptions, or rough edges
 - include a short build-in-public note that explains the project's origin without oversharing internal context
-- include a visual repo map or architecture diagram when it helps a cold reader understand the file layout, data flow, or user workflow. Prefer Mermaid or repo-native diagrams for exact labels; use native image generation for polished dark-mode illustrations, banners, or supporting visuals and store them under `assets/`.
+- include a visual repo map or architecture diagram when it helps a cold reader understand the file layout, data flow, or user workflow. Prefer Mermaid or repo-native diagrams for exact labels; use native image generation for polished dark-mode illustrations, banners, or supporting visuals.
 - prepare:
   - a one-line GitHub description
   - a short topic list
@@ -156,6 +156,24 @@ figlet -f rectangles -w 200 "<banner text>"
 - If the display name differs from the repo slug (e.g. repo `superwhisperer-lab`, display `superwhisper lab`), use the display name
 
 Wrap the output in a fenced code block. If figlet is not installed: `brew install figlet`. This is the first thing someone sees — it signals that the project has a real identity.
+
+**Generate and place README visuals.** When a generated image belongs in the README, treat it as a committed project artifact, not a temporary preview:
+
+1. Decide the image's job and placement before generating it:
+   - repo-wide overview, architecture map, or hero visual: place it near the top of `README.md`, immediately after the title and one-line summary or after the short opening paragraph if that reads better
+   - feature screenshot or workflow image: place it in the section it explains, before the detailed prose or example it supports
+   - supplemental image: place it lower in the README or omit it if it does not clarify anything
+2. Generate the image with native Codex image generation when available, or use Mermaid/SVG/repo-native output when exact text or deterministic structure matters more.
+3. Inspect the result for readability, distorted labels, private information, and whether it actually clarifies the project.
+4. Copy the final selected image into the repo, usually `assets/<descriptive-name>.<ext>` or `docs/assets/<descriptive-name>.<ext>`. Do not leave a README-referenced asset only in a generated-images, downloads, temp, or local cache directory.
+5. Insert the image into `README.md` with a relative path and meaningful alt text:
+
+   ```markdown
+   ![Dark-mode repository structure diagram](assets/repo-structure-dark.png)
+   ```
+
+6. Commit the image and README update together so the path is valid for clones, forks, GitHub rendering, and release zips.
+7. If the visual will be regenerated, use a stable filename when the README should always show the latest image, or versioned filenames when preserving previous outputs matters. Keep the generation prompt, source diagram, or script in the repo when repeatability matters.
 
 **Build the narrative from the code, informed by the user.** The user's spark answer is context — use it to understand intent, not to write their story for them verbatim. The real narrative comes from reading the code closely: what problem does the design actually solve, what's the non-obvious decision, what would a peer developer find interesting or worth stealing?
 

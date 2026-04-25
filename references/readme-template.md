@@ -17,7 +17,7 @@ The README has one job: a developer should read it and know immediately whether 
 
 > [One sentence: what it does and who it's for. Be specific. "A CLI that watches a directory and auto-commits changes to git" beats "A useful developer tool."]
 
-[Optional: include a repo map, architecture diagram, or generated dark-mode visual here if it helps a cold reader understand the project faster. Keep exact technical details in Markdown, Mermaid, SVG, or prose if a generated image could blur or distort labels.]
+[Optional: include a repo map, architecture diagram, or generated dark-mode visual here if it helps a cold reader understand the project faster. Store generated assets under `assets/` or `docs/assets/` and reference them with relative paths. Put repo-wide visuals here near the top; put feature-specific visuals in the section they explain. Keep exact technical details in Markdown, Mermaid, SVG, or prose if a generated image could blur or distort labels.]
 
 ## The Problem
 
@@ -127,4 +127,4 @@ They're what make a stranger decide whether to keep reading. Write them like a d
 
 **Quick Start must work.** Before publishing, run the Quick Start commands on a clean machine or in a clean shell. If they don't work, fix them or fix the setup — don't fudge the docs.
 
-**Visuals should clarify, not decorate.** A repo map, architecture diagram, or generated illustration is useful when it helps a stranger understand the shape of the project. Keep it project-bound under `assets/`, give it meaningful alt text, and avoid private screenshots or decorative images that do not explain anything.
+**Visuals should clarify, not decorate.** A repo map, architecture diagram, or generated illustration is useful when it helps a stranger understand the shape of the project. Keep it project-bound under `assets/` or `docs/assets/`, give it meaningful alt text, insert it into the README where it supports the surrounding explanation, and avoid private screenshots or decorative images that do not explain anything.

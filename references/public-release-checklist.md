@@ -48,7 +48,7 @@ Use this as a gate before publishing and again as a final completion check.
 - [ ] Quick-start path is present and matches actual code
 - [ ] Configuration and required env vars are documented
 - [ ] Limitations and known rough edges are stated honestly
-- [ ] Any generated visuals are stored in the repo, have meaningful alt text, and clarify the project instead of decorating it
+- [ ] Any generated visuals are stored in the repo, referenced from the README with relative paths, inserted in the section they explain, have meaningful alt text, and clarify the project instead of decorating it
 - [ ] No placeholder text (`TODO`, `YOUR_VALUE_HERE`, `coming soon`, `...`)
 - [ ] One-line GitHub description prepared
 - [ ] Topic tags prepared (language + domain + what it does)
