@@ -48,6 +48,7 @@ Use this as a gate before publishing and again as a final completion check.
 - [ ] Quick-start path is present and matches actual code
 - [ ] Configuration and required env vars are documented
 - [ ] Limitations and known rough edges are stated honestly
+- [ ] Any generated visuals are stored in the repo, have meaningful alt text, and clarify the project instead of decorating it
 - [ ] No placeholder text (`TODO`, `YOUR_VALUE_HERE`, `coming soon`, `...`)
 - [ ] One-line GitHub description prepared
 - [ ] Topic tags prepared (language + domain + what it does)
@@ -59,6 +60,15 @@ Use this as a gate before publishing and again as a final completion check.
 - [ ] Release zip created from committed HEAD (not from working tree)
 - [ ] Zip does not contain `.git/`, caches, or build artifacts
 - [ ] Zip unpacks cleanly and install steps work from it
+
+---
+
+## Native Codex Checks
+
+- [ ] Current external facts were verified with web search or primary docs when the README, install path, or publish process depends on changing platform behavior
+- [ ] Browser or computer-use verification was used for UI/GUI surfaces when shell tests cannot prove the main path
+- [ ] Generated image assets, screenshots, PDFs, spreadsheets, documents, or presentations were inspected before shipping
+- [ ] Worktree, subagent, automation, and native Git helpers did not leave unrelated local state in the publish diff
 
 ---
 

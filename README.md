@@ -14,6 +14,8 @@
 
 `build-in-public` closes the gap between "this works on my machine" and "someone else can clone, understand, and run it." It is for small tools, prototypes, and lab repos that already solve a real problem but still need the final public-release pass: secret checks, reproducible setup, README structure, packaging, and publish metadata.
 
+![Dark-mode repository structure diagram for build-in-public](assets/repo-structure-dark.png)
+
 The workflow is intentionally practical. It favors clear docs, honest constraints, and safe release lanes over heavy process. When the current repo and history are safe, it hardens in place; when they contain private context or messy scratch work, it prepares a clean public export.
 
 The README pass is part of the product. The included `references/readme-template.md` keeps the story focused on the problem, purpose, quick start, and limitations so the result is useful to a cold reader, not just the person who built it.
@@ -33,6 +35,18 @@ Given a local repo that already works, the skill:
 The skill reads the project, forms a short public framing, asks you to confirm the intent when needed, and uses the code as the source of truth for docs and release decisions.
 
 The release strategy distinguishes between two lanes: harden in place when the existing repo and git history are safe to expose, or create a clean public-export repo when the working project is good but the history has scratch commits, private notes, or experimental debris. The skill defaults to the safer lane.
+
+## Codex-Native Capabilities
+
+The skill now treats newer [Codex app capabilities](https://developers.openai.com/codex/app/features) as optional accelerators:
+
+- web search for current external facts before publishing
+- built-in image generation for README visuals and repo maps
+- in-app browser review for local web previews
+- computer use for narrow GUI-only verification
+- worktrees, Git tools, automations, and subagents when the host environment makes them safe and useful
+
+These features improve the release pass when available, but the workflow still works with ordinary shell, git, and GitHub CLI tooling.
 
 ## Quick Start
 
@@ -104,6 +118,7 @@ The skill also works outside the default workspace — point it at any local pat
 | File | Purpose |
 |------|---------|
 | `SKILL.md` | The skill definition |
+| `assets/repo-structure-dark.png` | Dark-mode repo structure diagram generated with Codex native image generation |
 | `references/public-release-checklist.md` | Gate checklist used before publishing |
 | `references/readme-template.md` | README structure template used when writing docs |
 | `scripts/create_release_zip.sh` | Packages a clean zip from committed HEAD |
@@ -117,6 +132,7 @@ The included `allowed-tools` and `version` fields are metadata; the workflow bod
 ## Requirements
 
 - A local skills setup that can load `SKILL.md`
+- Codex app or a compatible skills runtime for native accelerators such as image generation, web search, browser review, and worktrees
 - Node.js/npm for the `npx skills` install path
 - `git` for repo inspection and archive packaging
 - `unzip` for release zip verification
@@ -130,6 +146,7 @@ The included `allowed-tools` and `version` fields are metadata; the workflow bod
 - The skill is opinionated about README structure. If your project needs a different format, edit `references/readme-template.md` after cloning.
 - History rewriting is explicitly out of scope — the skill prefers a clean public-export repo over `git filter-branch` surgery.
 - The ASCII banner depends on `figlet`; install it first if you want that step included.
+- Generated visuals depend on the host runtime. If native image generation is unavailable, use Mermaid or another repo-native diagram instead.
 
 ## License
 

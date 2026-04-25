@@ -29,11 +29,25 @@ Use this skill when the project already works and the job is to make it presenta
 - `scripts/create_release_zip.sh`
   Use to create a clean zip from the current `HEAD` after the repo is ready.
 
+## Native Codex Capabilities
+
+When the host provides native Codex app or CLI capabilities, use them as accelerators without making them hard dependencies:
+
+- Use web search for current publish-platform facts, package-manager behavior, security advisories, or docs that may have changed. Prefer primary sources and cite them in the final report.
+- Use built-in image generation for project-bound README visuals when a repo map, architecture diagram, banner, or illustrative asset would make the project easier to understand. Save the final asset under `assets/`, use descriptive alt text, and keep critical technical labels in Markdown, Mermaid, SVG, or nearby prose if generated text is imperfect.
+- Use the in-app browser for local web previews, file-backed previews, and visual review on public pages that do not require sign-in.
+- Use computer use only for narrow GUI verification when the project is a desktop app, simulator flow, spreadsheet, document, presentation, or another surface that cannot be checked through normal shell/browser tooling.
+- Use Codex app worktrees for isolated exploratory or parallel release-prep work, then promote only the intended files into the publish lane.
+- Use native Git review, staging, commit, push, and PR support when available, but still inspect the diff and keep the working tree free of unrelated local state.
+- Use automations only for recurring release health checks, scheduled maintenance reports, or follow-up monitoring; do not turn one-off publishing decisions into recurring background work.
+- Use native subagents only when the user or host policy allows parallel delegation, and split independent lanes such as risk audit, docs review, and verification without overlapping file ownership.
+
 ## Default Outcome
 
 By the end of this skill, the repo should have:
 
 - a README that clearly explains the problem, why it was built, what it does, and how to use it
+- an optional project-bound diagram or visual asset when it materially improves cold-reader orientation
 - a clean public-facing description and suggested GitHub topics
 - basic hardening for setup, errors, ignored files, and user-facing defaults
 - tests or smoke checks that prove the main path and at least one edge or failure case
@@ -65,7 +79,8 @@ Rules:
 4. Determine whether to harden in place or create a clean public-export repo.
 5. Derive the likely public name, one-line description, install flow, and target audience from the repo itself. Ask only if those are truly ambiguous.
 6. Default the publish destination to the user's personal GitHub with public visibility when the request is to build in public.
-7. **Ask for the spark.** Before writing anything, read the code deeply enough to form three plausible hypotheses about why this was built. Then ask the user — present your three best guesses as options, plus a free-text field for something else entirely:
+7. Check which native Codex capabilities are available in the current environment, then choose the lightest useful path: local shell for deterministic repo work, web search for current external facts, browser/computer use for UI verification, image generation for helpful visuals, and worktrees/subagents only when they improve throughput safely.
+8. **Ask for the spark.** Before writing anything, read the code deeply enough to form three plausible hypotheses about why this was built. Then ask the user — present your three best guesses as options, plus a free-text field for something else entirely:
 
    > *What was the moment that made you build this?*
    > 1. [Your first hypothesis, drawn from the code]
@@ -122,6 +137,7 @@ Create or rewrite the public-facing docs so a stranger can orient quickly:
 - document the test command and any required local dependencies
 - be explicit about current limitations, platform assumptions, or rough edges
 - include a short build-in-public note that explains the project's origin without oversharing internal context
+- include a visual repo map or architecture diagram when it helps a cold reader understand the file layout, data flow, or user workflow. Prefer Mermaid or repo-native diagrams for exact labels; use native image generation for polished dark-mode illustrations, banners, or supporting visuals and store them under `assets/`.
 - prepare:
   - a one-line GitHub description
   - a short topic list
@@ -161,7 +177,9 @@ Run the strongest verification the repo can reasonably support:
 1. Run the relevant install, build, lint, test, and smoke commands.
 2. Verify the quick-start instructions against the actual code.
 3. If practical, simulate a cold-clone path instead of trusting the current machine state.
-4. Create the public zip artifact from committed code:
+4. For web or visual surfaces, use the in-app browser when available and capture the verification result in the report.
+5. For GUI-only surfaces, use computer use narrowly and record what was checked.
+6. Create the public zip artifact from committed code:
 
 ```bash
 bash "$(dirname "$0")/scripts/create_release_zip.sh" <repo-path>
