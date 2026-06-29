@@ -52,6 +52,11 @@ Use this as a gate before publishing and again as a final completion check.
 - [ ] No placeholder text (`TODO`, `YOUR_VALUE_HERE`, `coming soon`, `...`)
 - [ ] One-line GitHub description prepared
 - [ ] Topic tags prepared (language + domain + what it does)
+- [ ] Header carries a badge row (install, license; optional version)
+- [ ] Sections follow the canonical order; no floating sections
+- [ ] No more than two GitHub callouts
+- [ ] Tables and structured lists used where they beat prose
+- [ ] A visual or before→after example block is present per the visual policy, or intentionally omitted
 
 ---
 
@@ -63,12 +68,12 @@ Use this as a gate before publishing and again as a final completion check.
 
 ---
 
-## Native Codex Checks
+## Optional Accelerator Checks
 
-- [ ] Current external facts were verified with web search or primary docs when the README, install path, or publish process depends on changing platform behavior
-- [ ] Browser or computer-use verification was used for UI/GUI surfaces when shell tests cannot prove the main path
-- [ ] Generated image assets, screenshots, PDFs, spreadsheets, documents, or presentations were inspected before shipping
-- [ ] Worktree, subagent, automation, and native Git helpers did not leave unrelated local state in the publish diff
+- [ ] External facts that the README, install path, or publish process depends on were verified against current docs or primary sources
+- [ ] UI and GUI surfaces were verified directly (browser, computer-use, or equivalent) when shell tests cannot confirm the main path
+- [ ] Generated assets (images via Mermaid, SVG, repo-native tools, or e.g. Codex; screenshots; PDFs; documents; spreadsheets) were inspected before shipping
+- [ ] Worktree, subagent, automation, and Git helpers did not leave unrelated local state in the publish diff
 
 ---
 
