@@ -18,11 +18,11 @@
 
 ## The Problem
 
-A working repo and a public repo are not the same thing. The working one has hardcoded paths, stale credentials in an `.env` that never got `.gitignore`d, scratch commits with debug tokens, and a README that made sense to you six weeks ago but tells a stranger nothing. Most small tools that solve real problems never get published because closing that gap feels like a separate project.
+The working one has hardcoded paths, stale credentials in an `.env` that never got `.gitignore`d, scratch commits with debug tokens, and a README that made sense to you six weeks ago but tells a stranger nothing. Most small tools that solve real problems never get published because closing that gap feels like a separate project.
 
 ## Why I Built This
 
-The approach here is to treat the release pass as a skill, not a checklist. Rather than asking you to work through a static document, the skill reads the project, reasons about what needs hardening, and writes the docs from what it finds in the code. When the git history is safe to expose it hardens in place; when it contains scratch work or private context it prepares a clean export repo instead. Built during a run of publishing long-dormant personal tools, shared here because the pattern kept working.
+The approach here is to treat the release pass as a skill, not a checklist. The skill reads the project, reasons about what needs hardening, and writes the docs from what it finds in the code. When the git history is safe to expose, it hardens in place; when it contains scratch work or private context, it prepares a clean export repo instead. Built during a run of publishing long-dormant personal tools, shared here because the pattern kept working.
 
 ## What It Does
 
@@ -55,7 +55,7 @@ The release strategy distinguishes between two lanes: harden in place when the e
 
 ## Optional Accelerators
 
-Some host environments offer additional capabilities that the skill can use when available: native image generation for README visuals and repo maps (available in Codex; use Mermaid or SVG in other environments), web search for current external facts before publishing, browser review for local web previews, and worktrees or subagents for parallel work. The core workflow — audit, harden, docs, package, publish — runs on ordinary shell, git, and GitHub CLI tooling without any of these.
+The core workflow — audit, harden, docs, package, publish — runs on ordinary shell, git, and GitHub CLI. Some host environments offer additional capabilities the skill will use when available: native image generation for README visuals and repo maps (available in Codex; use Mermaid or SVG in other environments), web search for current external facts before publishing, browser review for local web previews, and worktrees or subagents for parallel work.
 
 ## Quick Start
 
