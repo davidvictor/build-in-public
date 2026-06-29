@@ -10,15 +10,19 @@
 
 > A skill for turning a working local repo into a public-ready project: audit risk, tighten setup, write clearer docs, package a clean archive, and publish to GitHub when appropriate.
 
-## About
-
-`build-in-public` closes the gap between "this works on my machine" and "someone else can clone, understand, and run it." It is for small tools, prototypes, and lab repos that already solve a real problem but still need the final public-release pass: secret checks, reproducible setup, README structure, packaging, and publish metadata.
+[![install](https://img.shields.io/badge/install-npx%20skills%20add-000000)](https://github.com/davidvictor/build-in-public)
+[![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![version](https://img.shields.io/badge/version-2.1.0-green)](#)
 
 ![Dark-mode repository structure diagram for build-in-public](assets/repo-structure-dark.png)
 
-The workflow is intentionally practical. It favors clear docs, honest constraints, and safe release lanes over heavy process. When the current repo and history are safe, it hardens in place; when they contain private context or messy scratch work, it prepares a clean public export.
+## The Problem
 
-The README pass is part of the product. The included `references/readme-template.md` keeps the story focused on the problem, purpose, quick start, and limitations so the result is useful to a cold reader, not just the person who built it.
+A working repo and a public repo are not the same thing. The working one has hardcoded paths, stale credentials in an `.env` that never got `.gitignore`d, scratch commits with debug tokens, and a README that made sense to you six weeks ago but tells a stranger nothing. Most small tools that solve real problems never get published because closing that gap feels like a separate project.
+
+## Why I Built This
+
+The approach here is to treat the release pass as a skill, not a checklist. Rather than asking you to work through a static document, the skill reads the project, reasons about what needs hardening, and writes the docs from what it finds in the code. When the git history is safe to expose it hardens in place; when it contains scratch work or private context it prepares a clean export repo instead. Built during a run of publishing long-dormant personal tools, shared here because the pattern kept working.
 
 ## What It Does
 
@@ -30,6 +34,17 @@ Given a local repo that already works, the skill:
 4. **Packages** a clean release zip using `git archive` (committed files only, no working tree debris)
 5. **Publishes** a public GitHub repo with a prepared description and topic tags
 
+## Included Files
+
+| File | What it is |
+|------|------------|
+| [`SKILL.md`](SKILL.md) | The skill definition |
+| [`assets/repo-structure-dark.png`](assets/repo-structure-dark.png) | Generated dark-mode diagram of the repository structure |
+| [`assets/readme-workflow-dark.png`](assets/readme-workflow-dark.png) | Generated dark-mode diagram of the release workflow |
+| [`references/public-release-checklist.md`](references/public-release-checklist.md) | Gate checklist used before publishing |
+| [`references/readme-template.md`](references/readme-template.md) | README structure template used when writing docs |
+| [`scripts/create_release_zip.sh`](scripts/create_release_zip.sh) | Packages a clean zip from committed HEAD |
+
 ## How It Works
 
 The skill reads the project, forms a short public framing, asks you to confirm the intent when needed, and uses the code as the source of truth for docs and release decisions.
@@ -38,23 +53,13 @@ The release strategy distinguishes between two lanes: harden in place when the e
 
 ![Dark-mode workflow diagram showing build-in-public turning a local repo into a published release](assets/readme-workflow-dark.png)
 
-## Codex-Native Capabilities
+## Optional Accelerators
 
-The skill now treats newer [Codex app capabilities](https://developers.openai.com/codex/app/features) as optional accelerators:
-
-- web search for current external facts before publishing
-- built-in image generation for README visuals and repo maps
-- in-app browser review for local web previews
-- computer use for narrow GUI-only verification
-- worktrees, Git tools, automations, and subagents when the host environment makes them safe and useful
-
-These features improve the release pass when available, but the workflow still works with ordinary shell, git, and GitHub CLI tooling.
+Some host environments offer additional capabilities that the skill can use when available: native image generation for README visuals and repo maps (available in Codex; use Mermaid or SVG in other environments), web search for current external facts before publishing, browser review for local web previews, and worktrees or subagents for parallel work. The core workflow — audit, harden, docs, package, publish — runs on ordinary shell, git, and GitHub CLI tooling without any of these.
 
 ## Quick Start
 
-### Recommended: install via `npx skills`
-
-The easiest path is the [`skills` CLI](https://github.com/vercel-labs/skills):
+Install via the `skills` CLI:
 
 ```bash
 npx skills add davidvictor/build-in-public
@@ -72,33 +77,13 @@ To preview what would be installed without touching your filesystem:
 npx skills add davidvictor/build-in-public --list
 ```
 
-### Updating
-
-To refresh installed skills to the latest version:
-
-```bash
-npx skills update
-```
-
-Or re-run `npx skills add davidvictor/build-in-public` — the CLI re-clones from `main` and overwrites.
-
-### Manual install
-
-Clone this repo into your local skills directory:
-
-```bash
-git clone https://github.com/davidvictor/build-in-public <your-skills-dir>/build-in-public
-```
-
-### Invoking
-
 Once installed, run against any repo you want to publish:
 
 ```
 build in public
 ```
 
-If slash commands are available:
+Or, if slash commands are available:
 
 ```
 /build-in-public
@@ -115,27 +100,23 @@ Point the skill at any local repo that already solves a real problem. It will:
 
 The skill also works outside the default workspace — point it at any local path and it adapts.
 
-## Included Files
+To update to the latest version after installing:
 
-| File | Purpose |
-|------|---------|
-| `SKILL.md` | The skill definition |
-| `assets/repo-structure-dark.png` | Dark-mode repo structure diagram generated with Codex native image generation |
-| `assets/readme-workflow-dark.png` | Dark-mode README workflow diagram generated with Codex native image generation |
-| `references/public-release-checklist.md` | Gate checklist used before publishing |
-| `references/readme-template.md` | README structure template used when writing docs |
-| `scripts/create_release_zip.sh` | Packages a clean zip from committed HEAD |
+```bash
+npx skills update
+```
 
-## Skill Notes
+Or re-run `npx skills add davidvictor/build-in-public` — the CLI re-clones from `main` and overwrites.
 
-This project uses `SKILL.md` frontmatter.
+For manual install:
 
-The included `allowed-tools` and `version` fields are metadata; the workflow body does not depend on them. If your setup requires a smaller frontmatter surface, you can remove those fields in your fork.
+```bash
+git clone https://github.com/davidvictor/build-in-public <your-skills-dir>/build-in-public
+```
 
 ## Requirements
 
 - A local skills setup that can load `SKILL.md`
-- Codex app or a compatible skills runtime for native accelerators such as image generation, web search, browser review, and worktrees
 - Node.js/npm for the `npx skills` install path
 - `git` for repo inspection and archive packaging
 - `unzip` for release zip verification
