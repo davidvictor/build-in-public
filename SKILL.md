@@ -1,6 +1,6 @@
 ---
 name: build-in-public
-version: 2.0.0
+version: 2.1.0
 description: Prepare a working local repo for a public GitHub release by auditing secrets and history, hardening setup and tests, writing a build-in-public README, packaging a clean zip, and publishing with public-ready metadata. Use when a sandbox, lab, or prototype repo already solves a real problem and now needs the final pass to be safely shared and used by other people.
 allowed-tools:
   - Bash
@@ -18,7 +18,7 @@ allowed-tools:
 
 ## Overview
 
-Use this skill when the project already works and the job is to make it presentable, safe, and usable in public. The default target is a sandbox repo under `~/.codex/workspaces/default/repos/` or `~/.codex/workspaces/default/labs/`, but the same workflow works for any local repo.
+Use this skill when the project already works and the job is to make it presentable, safe, and usable in public. The workflow works for any local repo.
 
 ## Resources
 
@@ -29,18 +29,23 @@ Use this skill when the project already works and the job is to make it presenta
 - `scripts/create_release_zip.sh`
   Use to create a clean zip from the current `HEAD` after the repo is ready.
 
-## Native Codex Capabilities
+## Optional Accelerators
 
-When the host provides native Codex app or CLI capabilities, use them as accelerators without making them hard dependencies:
+When the host provides extra capabilities, use them as accelerators. Never make
+them hard dependencies; the workflow must complete with ordinary shell, git, and
+`gh`.
 
-- Use web search for current publish-platform facts, package-manager behavior, security advisories, or docs that may have changed. Prefer primary sources and cite them in the final report.
-- Use built-in image generation for project-bound README visuals when a repo map, architecture diagram, banner, or illustrative asset would make the project easier to understand. Generate the image, inspect it, copy the final selected file into the repo under `assets/`, insert it into the README at the right narrative location, use descriptive alt text, and keep critical technical labels in Markdown, Mermaid, SVG, or nearby prose if generated text is imperfect.
-- Use the in-app browser for local web previews, file-backed previews, and visual review on public pages that do not require sign-in.
-- Use computer use only for narrow GUI verification when the project is a desktop app, simulator flow, spreadsheet, document, presentation, or another surface that cannot be checked through normal shell/browser tooling.
-- Use Codex app worktrees for isolated exploratory or parallel release-prep work, then promote only the intended files into the publish lane.
-- Use native Git review, staging, commit, push, and PR support when available, but still inspect the diff and keep the working tree free of unrelated local state.
-- Use automations only for recurring release health checks, scheduled maintenance reports, or follow-up monitoring; do not turn one-off publishing decisions into recurring background work.
-- Use native subagents only when the user or host policy allows parallel delegation, and split independent lanes such as risk audit, docs review, and verification without overlapping file ownership.
+- Web search for current publish-platform facts, package behavior, or security
+  advisories. Prefer primary sources and cite them.
+- Image generation for README visuals when a diagram or hero asset aids a cold
+  reader. Native image generation is a Codex feature; on other hosts, fall back
+  to Mermaid, SVG, or repo-native diagrams for exact labels.
+- In-app browser preview for local web previews and public-page review.
+- Computer use for narrow GUI verification (desktop apps, simulators, documents).
+- Worktrees, native Git review, and subagents for isolated or parallel
+  release-prep lanes, when the host makes them safe.
+- Automations only for recurring release-health checks, never for one-off
+  publishing decisions.
 
 ## Default Outcome
 
@@ -64,7 +69,7 @@ Pick the safer lane before editing:
 
 Rules:
 
-- For sandbox projects, prefer a sibling public repo under `~/.codex/workspaces/default/repos/<slug>-public` when public history is questionable.
+- For sandbox projects, prefer a sibling public repo (e.g. `<project-parent>/<slug>-public`) when public history is questionable.
 - Preserve provenance in a short note, but do not leak private paths, internal project names, or personal machine details.
 - If history rewriting would be needed to make the current repo safe, prefer a fresh public export unless the user explicitly wants history preserved.
 - Do not publish anything until the repo is understandable to a stranger from a cold clone.
@@ -79,7 +84,7 @@ Rules:
 4. Determine whether to harden in place or create a clean public-export repo.
 5. Derive the likely public name, one-line description, install flow, and target audience from the repo itself. Ask only if those are truly ambiguous.
 6. Default the publish destination to the user's personal GitHub with public visibility when the request is to build in public.
-7. Check which native Codex capabilities are available in the current environment, then choose the lightest useful path: local shell for deterministic repo work, web search for current external facts, browser/computer use for UI verification, image generation for helpful visuals, and worktrees/subagents only when they improve throughput safely.
+7. Check which optional accelerators are available in the current environment, then choose the lightest useful path: local shell for deterministic repo work, web search for current external facts, browser/computer use for UI verification, image generation for helpful visuals, and worktrees/subagents only when they improve throughput safely.
 8. **Ask for the spark.** Before writing anything, read the code deeply enough to form three plausible hypotheses about why this was built. Then ask the user — present your three best guesses as options, plus a free-text field for something else entirely:
 
    > *What was the moment that made you build this?*
@@ -88,9 +93,8 @@ Rules:
    > 3. [Your third hypothesis]
    > 4. Something else — tell me in your own words
 
-   This pattern applies to every `AskUserQuestion` call in this skill: always propose three concrete options based on what you've already read, then leave room for the user to override. It's faster than open-ended questions, and your hypotheses often surface framing the user hadn't considered.
-
-   Treat the answer as context, not gospel. The user knows their own motivation but may understate the technical interest, miss what's actually compelling about the design, or frame it too narrowly. Your job is to read the code and find what's genuinely worth talking about, then use their answer as a lens. The code is the primary source. Their answer is a hint.
+   See [`references/narrative-voice.md`](references/narrative-voice.md) for the
+   three-options pattern and how to weigh the user's answer against the code.
 
 ### 2. Audit Public Risk
 
@@ -137,7 +141,7 @@ Create or rewrite the public-facing docs so a stranger can orient quickly:
 - document the test command and any required local dependencies
 - be explicit about current limitations, platform assumptions, or rough edges
 - include a short build-in-public note that explains the project's origin without oversharing internal context
-- include a visual repo map or architecture diagram when it helps a cold reader understand the file layout, data flow, or user workflow. Prefer Mermaid or repo-native diagrams for exact labels; use native image generation for polished dark-mode illustrations, banners, or supporting visuals.
+- include a visual repo map or architecture diagram when it helps a cold reader understand the file layout, data flow, or user workflow. Prefer Mermaid or repo-native diagrams for exact labels; use image generation for polished illustrations, banners, or supporting visuals when available.
 - prepare:
   - a one-line GitHub description
   - a short topic list
@@ -157,34 +161,20 @@ figlet -f rectangles -w 200 "<banner text>"
 
 Wrap the output in a fenced code block. If figlet is not installed: `brew install figlet`. This is the first thing someone sees — it signals that the project has a real identity.
 
-**Generate and place README visuals.** When a generated image belongs in the README, treat it as a committed project artifact, not a temporary preview:
+**README visuals are committed artifacts.** When a generated image belongs in the
+README, store it under `assets/`, reference it with a relative path and real alt
+text, and commit it with the README change. Full mechanics:
+[`references/narrative-voice.md`](references/narrative-voice.md) ("README Visuals").
 
-1. Decide the image's job and placement before generating it:
-   - repo-wide overview, architecture map, or hero visual: place it near the top of `README.md`, immediately after the title and one-line summary or after the short opening paragraph if that reads better
-   - feature screenshot or workflow image: place it in the section it explains, before the detailed prose or example it supports
-   - supplemental image: place it lower in the README or omit it if it does not clarify anything
-2. Generate the image with native Codex image generation when available, or use Mermaid/SVG/repo-native output when exact text or deterministic structure matters more.
-3. Inspect the result for readability, distorted labels, private information, and whether it actually clarifies the project.
-4. Copy the final selected image into the repo, usually `assets/<descriptive-name>.<ext>` or `docs/assets/<descriptive-name>.<ext>`. Do not leave a README-referenced asset only in a generated-images, downloads, temp, or local cache directory.
-5. Insert the image into `README.md` with a relative path and meaningful alt text:
+**Build the narrative from the code.** The user's spark answer is context; the
+code is the source. Find what is genuinely interesting, frame the problem at the
+right specificity, and write to the anti-slop standard. Voice and tone:
+[`references/narrative-voice.md`](references/narrative-voice.md).
 
-   ```markdown
-   ![Dark-mode repository structure diagram](assets/repo-structure-dark.png)
-   ```
-
-6. Commit the image and README update together so the path is valid for clones, forks, GitHub rendering, and release zips.
-7. If the visual will be regenerated, use a stable filename when the README should always show the latest image, or versioned filenames when preserving previous outputs matters. Keep the generation prompt, source diagram, or script in the repo when repeatability matters.
-
-**Build the narrative from the code, informed by the user.** The user's spark answer is context — use it to understand intent, not to write their story for them verbatim. The real narrative comes from reading the code closely: what problem does the design actually solve, what's the non-obvious decision, what would a peer developer find interesting or worth stealing?
-
-Your job as narrator:
-- find the thing in the code that's actually interesting — the constraint that shaped the design, the approach that's different from the obvious solution, the tradeoff that was made deliberately
-- frame the problem at the right level of specificity: concrete enough that someone who's had the same frustration recognizes it, general enough that it's not just about the user's exact machine
-- give it a voice — not hype, not marketing copy, but the clear, slightly excited tone of a developer who actually solved something annoying and wants to tell you how
-
-If the user's explanation is shallow ("I just needed it to work"), dig into the code and find the real story yourself. If their explanation is technically richer than the code warrants, pull it back. The README should be honest about what the project is — a small, useful, well-made tool — not oversold.
-
-The tone is: "Here's a real problem, here's what I built, here's what's interesting about how it works." Small tools can have good stories. Don't flatten them, but don't inflate them either.
+**Structure follows the template.** Use the canonical section skeleton and
+formatting toolkit in [`references/readme-template.md`](references/readme-template.md):
+badge row, fixed section order, callouts (max two), file-map table, collapsibles,
+structured lists, and a before→after example block for prose repos.
 
 Avoid documentation sprawl. A strong README, a license, and the minimum supporting files beat a pile of ceremonial docs.
 
@@ -206,7 +196,7 @@ bash "$(dirname "$0")/scripts/create_release_zip.sh" <repo-path>
 #   bash ~/.codex/skills/build-in-public/scripts/create_release_zip.sh <repo-path>    # Codex
 ```
 
-The helper writes the zip under `~/.codex/workspaces/default/artifacts/<slug>/` by default. For repos outside the codex workspace, the zip lands in `/tmp/build-in-public/<slug>/`.
+The helper writes the zip under `/tmp/build-in-public/<slug>/` by default. On a Codex host where `~/.codex/workspaces/` exists, it uses that path instead.
 
 ### 6. Publish
 
