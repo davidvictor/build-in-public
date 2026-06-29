@@ -18,7 +18,7 @@
 
 ## The Problem
 
-The working one has hardcoded paths, stale credentials in an `.env` that never got `.gitignore`d, scratch commits with debug tokens, and a README that made sense to you six weeks ago but tells a stranger nothing. Most small tools that solve real problems never get published because closing that gap feels like a separate project.
+Your tool works. But it has hardcoded paths, stale credentials in an `.env` that never got `.gitignore`d, scratch commits with debug tokens, and a README that made sense to you six weeks ago but tells a stranger nothing. Most small tools that solve real problems never get published because closing that gap feels like a separate project.
 
 ## Why I Built This
 

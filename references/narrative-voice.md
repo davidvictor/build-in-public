@@ -38,8 +38,8 @@ The code is the primary source. The user's answer is a lens, not gospel.
 - Frame the problem at the right specificity: concrete enough that someone with
   the same frustration recognizes it, general enough that it is not just about
   one machine.
-- Give it a voice: a developer telling another developer about a real problem
-  they solved. Not hype, not marketing copy.
+- Give it a voice: plain language, the way a developer tells another developer
+  about a real problem they solved.
 
 ## Anti-Slop Voice Standard
 

@@ -101,7 +101,7 @@ section to that standard. README-structure-specific reminders:
 [![license](https://img.shields.io/badge/license-<LICENSE>-blue)](LICENSE)
 [![version](https://img.shields.io/badge/version-<version>-green)](#)
 
-[Optional: include a repo map, architecture diagram, or generated dark-mode visual here if it helps a cold reader understand the project faster. Store generated assets under `assets/` or `docs/assets/` and reference them with relative paths. Put repo-wide visuals here near the top; put feature-specific visuals in the section they explain. Keep exact technical details in Markdown, Mermaid, SVG, or prose if a generated image could blur or distort labels.]
+[Optional visual anchor or before→after example block — see the Visuals policy below.]
 
 ## The Problem
 
@@ -162,7 +162,9 @@ python main.py --help
 
 ## Usage
 
-[The most common real use case, fully shown. Use realistic values, not `<your-value-here>`.]
+[Optional: include only if there's a common use case beyond what Quick Start already covers.
+
+The most common real use case, fully shown. Use realistic values, not `<your-value-here>`.]
 
 ```bash
 [example command with real-looking output or explanation]
