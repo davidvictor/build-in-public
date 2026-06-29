@@ -10,8 +10,8 @@
 #   <output-dir>/<slug>/<slug>-v<version>.zip
 #
 # If output-dir is not provided:
-#   - Repos under ~/.codex/workspaces/default/ → ~/.codex/workspaces/default/artifacts/<slug>/
-#   - All other repos → /tmp/build-in-public/<slug>/
+#   - Default: /tmp/build-in-public/<slug>/
+#   - Opportunistic (codex workspace): ~/.codex/workspaces/default/artifacts/<slug>/
 
 set -euo pipefail
 
@@ -36,6 +36,7 @@ fi
 if [ -n "${2:-}" ]; then
   OUTPUT_DIR="$(mkdir -p "$2" && cd "$2" && pwd)"
 elif [[ "$REPO_PATH" == *"/.codex/workspaces/default/"* ]]; then
+  # Opportunistic: keep codex-workspace artifacts together when that's the host
   OUTPUT_DIR="$HOME/.codex/workspaces/default/artifacts/$SLUG"
 else
   OUTPUT_DIR="/tmp/build-in-public/$SLUG"
